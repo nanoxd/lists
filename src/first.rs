@@ -17,6 +17,17 @@ impl List {
 
     self.head = Link::More(new_node)
   }
+
+  pub fn pop(&mut self) -> Option<i32> {
+    match mem::replace(& mut self.head, Link::Empty) {
+      Link::Empty => None,
+      Link::More(boxed_node) => {
+        let node = *boxed_node;
+        self.head = node.next;
+        Some(node.elem)
+      }
+    }
+  }
 }
 
 struct Node {
