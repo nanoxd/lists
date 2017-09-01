@@ -1,5 +1,3 @@
-use std::mem;
-
 pub struct List {
   head: Link,
 }
@@ -19,14 +17,11 @@ impl List {
   }
 
   pub fn pop(&mut self) -> Option<i32> {
-    match self.head.take() {
-      None => None,
-      Some(boxed_node) => {
-        let node = *boxed_node;
+    self.head.take().map(|node| {
+        let node = *node;
         self.head = node.next;
-        Some(node.elem)
-      }
-    }
+        node.elem
+    })
   }
 }
 
