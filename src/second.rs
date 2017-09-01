@@ -1,13 +1,13 @@
-pub struct List {
-  head: Link,
+pub struct List<T> {
+  head: Link<T>,
 }
 
-impl List {
+impl<T> List<T> {
   pub fn new() -> Self {
     List { head: None }
   }
 
-  pub fn push(&mut self, elem: i32) {
+  pub fn push(&mut self, elem: T) {
     let new_node = Box::new(Node {
       elem,
       next: self.head.take(),
@@ -16,7 +16,7 @@ impl List {
     self.head = Some(new_node)
   }
 
-  pub fn pop(&mut self) -> Option<i32> {
+  pub fn pop(&mut self) -> Option<T> {
     self.head.take().map(|node| {
         let node = *node;
         self.head = node.next;
@@ -25,7 +25,7 @@ impl List {
   }
 }
 
-impl Drop for List {
+impl<T> Drop for List<T> {
     fn drop(&mut self) {
         let mut cur_link = self.head.take();
         // `while let` == "do this thing until this pattern doesn't match"
@@ -38,12 +38,12 @@ impl Drop for List {
     }
 }
 
-struct Node {
-  elem: i32,
-  next: Link,
+struct Node<T> {
+  elem: T,
+  next: Link<T>,
 }
 
-type Link = Option<Box<Node>>;
+type Link<T> = Option<Box<Node<T>>>;
 
 #[cfg(test)]
 mod test {
