@@ -30,4 +30,34 @@ impl<T> List<T> {
       head: self.head.as_ref().and_then(|node| node.next.clone()),
     }
   }
+
+  pub fn head(&self) -> Option<&T> {
+    self.head.as_ref().map(|node| &node.elem)
+  }
+}
+
+#[cfg(test)]
+mod test {
+  use super::List;
+
+  #[test]
+  fn list_basics() {
+    let mut list = List::new();
+    assert_eq!(list.head(), None);
+
+    let list = list.append(1).append(2).append(3);
+    assert_eq!(list.head(), Some(&3));
+
+    let list = list.tail();
+    assert_eq!(list.head(), Some(&2));
+
+    let list = list.tail();
+    assert_eq!(list.head(), Some(&1));
+
+    let list = list.tail();
+    assert_eq!(list.head(), None);
+
+    let list = list.tail();
+    assert_eq!(list.head(), None);
+  }
 }
